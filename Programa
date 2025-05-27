@@ -1,0 +1,30 @@
+codigo=input("Ingrese el código a descifrar: ")
+
+#retroceder 3 lugares
+for i in range(28):
+    retrocedida = ""
+    print (i)
+    for letra in codigo:
+        if ord(letra)>=97+i:
+            correr_atras=ord(letra)-i
+            retrocedida+=chr(correr_atras)
+        else:
+            correr_atras = 122-(i-(ord(letra)-97))
+            retrocedida += chr(correr_atras)
+
+#permutar un par de letras
+    permutacion=""
+    for i in range(0,len(retrocedida),2):
+        if i<len(retrocedida)-2:
+            letra1=retrocedida[i]
+            letra2=retrocedida[i+1]
+            permutacion += letra2 + letra1
+        else:
+            letra1=retrocedida[i]
+            permutacion += letra1
+
+#invertir
+    invertir=""
+    for i in range(len(permutacion)-1,-1,-1):
+        invertir+=permutacion[i]
+    print(invertir)
