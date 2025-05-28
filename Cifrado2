@@ -1,0 +1,83 @@
+def normalizar(cadena):
+    cadena = cadena.lower()
+    nuevaCadena = ""
+    for letra in cadena:
+        #Evaluo si la letra tiene tilde o no
+        if letra == "á":
+            letra = "a"
+        elif letra == "é":
+            letra = "e"
+        elif letra == "í":
+            letra = "i"
+        elif letra == "ó":
+            letra = "o"
+        elif letra == "ú":
+                letra = "u"
+        # Evaluo si la letra entra en el alfabeto en minusculas es una ñ o un espacio
+        if (ord(letra) >= 97 and ord(letra) <= 122) or letra == "ñ" or letra == " ":
+            nuevaCadena += letra
+    return nuevaCadena
+
+def cifrarDesplazamiento(cadena,desplazamiento):
+    nuevaCadena = ""
+    for letra in cadena:
+        #Crea la nueva letra
+        letra = chr(ord(letra) + desplazamiento)
+        #Verifica si es menor al codigo ascii de A o mayor al de Z
+        if ord(letra) > 122:
+            diferencia = ord(letra) - 122
+            letra = chr(96 + diferencia)
+        elif ord(letra) < 97:
+            diferencia = 97 - ord(letra)
+            letra = chr(123 - diferencia)
+        nuevaCadena += letra
+    return nuevaCadena
+
+def permutarParejas(cadena):
+    letra1 = ""
+    letra2 = ""
+    nuevaCadena = ""
+    #Con paso dos va seleccionando dos letras e intercambiando sus lugaress
+    for i in range(0,len(cadena)-1,2):
+        letra1 = cadena[i]
+        letra2 = cadena[i+1]
+        nuevaCadena += letra2 + letra1
+    return nuevaCadena
+
+def invertirTexto(cadena):
+    nuevaCadena = ""
+    for letra in cadena:
+        nuevaCadena = letra + nuevaCadena
+    return nuevaCadena
+
+def descifrarCodigo(cadena, desplazamiento):
+    ultimaLetra = ""
+    desplazamiento = desplazamiento * -1
+    nuevaCadena = cifrarDesplazamiento(cadena,desplazamiento)
+    nuevaCadena = normalizar(nuevaCadena)
+    #Al usar paso 2 en la permutacion debo verificar si la cadena es impar para no perder la ultima letra
+    if len(cadena) % 2 != 0:
+        ultimaLetra = nuevaCadena[-1]
+    nuevaCadena = permutarParejas(nuevaCadena)
+    nuevaCadena = invertirTexto(nuevaCadena)
+    nuevaCadena = ultimaLetra + nuevaCadena
+    print(nuevaCadena)
+
+def cifrarCodigo(cadena, desplazamiento):
+    codigo = normalizar(cadena)
+    codigo = invertirTexto(codigo)
+    codigo = permutarParejas(codigo)
+    codigo = cifrarDesplazamiento(codigo, desplazamiento)
+    print(codigo)
+
+opcion = int(input('1. Cifrar un codigo. 2. Descifrar un codigo'))
+if opcion == 1:
+    cadena = input('Indique el mensaje a cifrar')
+    desplazamiento = int(input('Ingrese el desplazamiento'))
+    cifrarCodigo(cadena, desplazamiento)
+elif opcion == 2:
+    cadena = input('Indique el codigo a descifrar')
+    desplazamiento = int(input('Ingrese el desplazamiento'))
+    descifrarCodigo(cadena, desplazamiento)
+else:
+    print('Esa opcion no es valida')
